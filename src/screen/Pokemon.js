@@ -1,51 +1,49 @@
-import React, { useState, useEffect } from 'react'
-import { ScrollView } from 'react-native'
-import { getPokemonDetailsApi } from '../api/pokemon'
-import Header from '../components/Pokemon/Header'
-import Stats from '../components/Pokemon/Stats'
-import Type from '../components/Pokemon/Type'
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Favorite from '../components/Pokemon/Favorite'
-import useAuth from '../hooks/useAuth';
-
+import React, { useState, useEffect } from "react";
+import { ScrollView } from "react-native";
+import { getPokemonDetailsApi } from "../api/pokemon";
+import Header from "../components/Pokemon/Header";
+import Stats from "../components/Pokemon/Stats";
+import Type from "../components/Pokemon/Type";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import Favorite from "../components/Pokemon/Favorite";
+import useAuth from "../hooks/useAuth";
 
 export default function Pokemon(props) {
+  const {
+    navigation,
+    route: { params },
+  } = props;
 
-	const {
-		navigation,
-		route: { params },
-	} = props
+  const [pokemon, setPokemon] = useState(null);
+  const { auth } = useAuth();
 
-	const [pokemon, setPokemon] = useState(null)
-	const { auth } = useAuth()
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => auth && <Favorite id={pokemon?.id} />,
+      headerLeft: () => (
+        <Icon
+          name="arrow-left"
+          color="#FFF"
+          size={20}
+          style={{ marginLeft: 20 }}
+          onPress={navigation.goBack}
+        />
+      ),
+    });
+  }, [navigation, params, pokemon]);
 
-	useEffect(() => {
-		navigation.setOptions({
-			headerRight: () => auth && <Favorite id={pokemon?.id} />,
-			headerLeft: () => (
-				<Icon
-					name="arrow-left"
-					color="#FFF"
-					size={20}
-					style={{ marginLeft: 20 }}
-					onPress={navigation.goBack}
-				/>
-			)
-		})
-	}, [navigation, params, pokemon])
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getPokemonDetailsApi(params.id);
+        setPokemon(response);
+      } catch (error) {
+        navigation.goBack();
+      }
+    })();
+  }, [params]);
 
-	useEffect(() => {
-		(async () => {
-			try {
-				const response = await getPokemonDetailsApi(params.id)
-				setPokemon(response)
-			} catch (error) {
-				navigation.goBack()
-			}
-		})();
-	}, [params])
-
-	if (!pokemon) return null;
+  if (!pokemon) return null;
 
   return (
     <ScrollView>

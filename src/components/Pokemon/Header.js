@@ -1,72 +1,72 @@
-import React from 'react'
-import { capitalize } from 'lodash';
+import React from "react";
+import { capitalize } from "lodash";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, Image } from 'react-native'
-import getColorByPokemonType from '../../utils/getColorByPokemonType';
-
+import getColorByPokemonType from "../../utils/getColorByPokemonType";
+import styled from "styled-components";
 
 export default function Header(props) {
+  const { name, order, image, type } = props;
+  const color = getColorByPokemonType(type);
 
-	const { name, order, image, type } = props
-	const color = getColorByPokemonType(type)
-	
-	const bgStyle = [{ backgroundColor: color, ...styles.bg }]
+  const bgStyle = [{ backgroundColor: color }];
 
-
-	return (
-		<>
-			<View style={bgStyle} />
-			<SafeAreaView style={styles.content}>
-				<View style={styles.header}>
-					<Text style={styles.name}>{capitalize(name)}</Text>
-					<Text style={styles.order}>#{`${order}`.padStart(3, 0)}</Text>
-				</View>
-				<View style={styles.contentImg}>
-					<Image source={{ uri: image }} style={styles.image} />
-				</View>
-			</SafeAreaView>
-		</>
-	)
+  return (
+    <>
+      <PageBackground style={bgStyle} />
+      <Container>
+        <TitleContainer>
+          <NameLabel>{capitalize(name)}</NameLabel>
+          <OrderLabel>#{`${order}`.padStart(3, 0)}</OrderLabel>
+        </TitleContainer>
+        <ImageContainer>
+          <Imagen source={{ uri: image }} style={{ resizeMode: "contain" }} />
+        </ImageContainer>
+      </Container>
+    </>
+  );
 }
 
-const styles = StyleSheet.create({
-	bg: {
-		width: "100%",
-		height: 400,
-		position: "absolute",
-		borderBottomEndRadius: 300,
-		borderBottomLeftRadius: 300,
-		transform: [{ scaleX: 2 }]
-	},
-	content: {
-		marginHorizontal: 20,
-		marginTop: 30
-	},
-	header:{
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		paddingTop: 40
-		
-	},
-	name:{
-		color: "#FFF",
-		fontWeight: "bold",
-		fontSize: 27
-	},
-	order:{
-		color: "#FFF",
-		fontWeight: "bold",
-	},
-	contentImg: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		top: 30
-	},
-	image: {
-		width: 250,
-		height: 300,
-		resizeMode: "contain"
-	}
-})
+const Container = styled.SafeAreaView`
+  margin: 30px 20px;
+`;
+
+const TitleContainer = styled.View`
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const NameLabel = styled.Text`
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+`;
+
+const OrderLabel = styled.Text`
+  color: #fff;
+  font-weight: bold;
+`;
+
+const ImageContainer = styled.View`
+  top: 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Imagen = styled.Image`
+  width: 250px;
+  height: 300px;
+`;
+
+const PageBackground = styled.View`
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  transform: scaleX(2);
+  border-bottom-left-radius: 300px;
+  border-bottom-right-radius: 300px;
+`;

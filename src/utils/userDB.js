@@ -4,8 +4,8 @@ export const user = {
 }
 
 export const userDetails = {
+    email: "raycris97@gmail.com",
     username: "raycris24",
-    firstName: "Raycris",
     lastName: "Maldonado",
-    email: "raycris97@gmail.com"
+    firstName: "Raycris",
 }

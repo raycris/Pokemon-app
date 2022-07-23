@@ -1,40 +1,36 @@
-import React from 'react'
-import { map, capitalize } from 'lodash'
-import { StyleSheet, View, Text } from 'react-native'
-import getColorByPokemonType from '../../utils/getColorByPokemonType'
-
-
+import React from "react";
+import { map, capitalize } from "lodash";
+import { StyleSheet, View, Text } from "react-native";
+import getColorByPokemonType from "../../utils/getColorByPokemonType";
+import styled from "styled-components";
 
 export default function Type(props) {
-  const { types } = props
+  const { types } = props;
   return (
-    <View style={styles.content}>
+    <Container>
       {map(types, (item, index) => (
-        <View
+        <Pill
           key={index}
           style={{
-            ...styles.pill,
-            backgroundColor: getColorByPokemonType(item.type.name)
+            backgroundColor: getColorByPokemonType(item.type.name),
           }}
         >
           <Text>{capitalize(item.type.name)}</Text>
-        </View>
+        </Pill>
       ))}
-    </View>
-  )
+    </Container>
+  );
 }
 
-styles = StyleSheet.create({
-  content: {
-    marginTop: 50,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  pill: {
-    borderRadius: 20,
-    paddingVertical: 5,
-    paddingHorizontal: 30,
-    marginHorizontal: 10,
-  },
-})
+const Container = styled.View`
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+`;
+const Pill = styled.View`
+  margin: 0 10px;
+  padding: 5px 30px;
+  border-radius: 20px;
+`;

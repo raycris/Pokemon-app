@@ -1,68 +1,68 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
-import getColorByPokemonType from '../utils/getColorByPokemonType'
-import { capitalize } from 'lodash'
-import { useNavigation } from "@react-navigation/native"
-
-
+import React from "react";
+import { TouchableWithoutFeedback } from "react-native";
+import getColorByPokemonType from "../utils/getColorByPokemonType";
+import { capitalize } from "lodash";
+import { useNavigation } from "@react-navigation/native";
+import styled from "styled-components";
 
 export default function PokemonCard(props) {
-	const { pokemon } = props
-	const navigation = useNavigation()
+  const { pokemon } = props;
+  const navigation = useNavigation();
 
-	const getPokemonColor = getColorByPokemonType(pokemon.type)
-	const bgStyles = {backgroundColor: getPokemonColor, ...styles.bgStyles}
+  const getPokemonColor = getColorByPokemonType(pokemon.type);
+  const bgStyles = { backgroundColor: getPokemonColor };
 
-	const goToPokemon = () => {
-		navigation.navigate("Pokemon", {id: pokemon.id})
-	}
-	return (
-		<TouchableWithoutFeedback onPress={goToPokemon}>
-			<View style={styles.card}>
-				<View style={styles.spacing}>
-					<View style={bgStyles}>
-						<Text style={styles.number}>#{`${pokemon.order}`.padStart(3, 0)}</Text>
-						<Text style={styles.name}>{capitalize(pokemon.name)}</Text>
-						<Image source={{ uri: pokemon.image }} style={styles.image} />
-					</View>
-				</View>
-			</View>
-		</TouchableWithoutFeedback>
-	)
+  const goToPokemon = () => {
+    navigation.navigate("Pokemon", { id: pokemon.id });
+  };
+  return (
+    <TouchableWithoutFeedback onPress={goToPokemon}>
+      <CardContainer>
+        <SpacingContainer>
+          <CardBackground style={bgStyles}>
+            <NumberLabel>#{`${pokemon.order}`.padStart(3, 0)}</NumberLabel>
+            <NameLabel>{capitalize(pokemon.name)}</NameLabel>
+            <ImageContainer source={{ uri: pokemon.image }} />
+          </CardBackground>
+        </SpacingContainer>
+      </CardContainer>
+    </TouchableWithoutFeedback>
+  );
 }
 
-const styles = StyleSheet.create({
-	card: {
-		flex: 1,
-		height: 130
-	},
-	spacing: {
-		flex: 1,
-		padding: 5
-	},
-	bgStyles:{
-		flex:1,
-		borderRadius:15,
-		padding: 10
-	},
-	number:{
-		position: 'absolute',
-		right: 10,
-		top: 10,
-		color: '#FFF',
-		fontSize: 11
-	},
-	name:{
-		color: '#FFF',
-		fontWeight: 'bold',
-		fontSize: 15,
-		paddingTop: 10
-	},
-	image: {
-		position: 'absolute',
-		bottom: 2,
-		right: 2,
-		width: 90,
-		height: 90
-	}
-})
+const CardContainer = styled.View`
+  flex: 1;
+  height: 130px;
+`;
+
+const SpacingContainer = styled.View`
+  flex: 1;
+  padding: 5px;
+`;
+const CardBackground = styled.View`
+  flex: 1;
+  padding: 10px;
+  border-radius: 16px;
+`;
+
+const NumberLabel = styled.Text`
+  top: 10px;
+  color: #fff;
+  right: 10px;
+  position: absolute;
+  font-size: 12px;
+`;
+const NameLabel = styled.Text`
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 10px;
+`;
+
+const ImageContainer = styled.Image`
+  right: 2px;
+  width: 90px;
+  height: 90px;
+  bottom: 2px;
+  position: absolute;
+`;

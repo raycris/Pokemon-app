@@ -4,6 +4,7 @@ import React, { useState, useCallback } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { getPokemonFavoriteApi } from "../../api/favorite";
 import useAuth from "../../hooks/useAuth";
+import styled from "styled-components";
 
 export default function UserData() {
   const { auth, logout } = useAuth();
@@ -23,21 +24,21 @@ export default function UserData() {
   );
 
   return (
-    <View style={styles.content}>
-      <View style={styles.titleBlock}>
-        <Text style={styles.title}>Bienvenido</Text>
-        <Text style={styles.title}>{`${auth.firstName} ${auth.lastName}`}</Text>
-      </View>
+    <Container>
+      <TitleContainer>
+        <Title>Bienvenido</Title>
+        <Title>{`${auth.firstName} ${auth.lastName}`}</Title>
+      </TitleContainer>
 
-      <View style={styles.dataContent}>
+      <DataContainer>
         <ItemMenu title="Nombre" text={`${auth.firstName} ${auth.lastName}`} />
         <ItemMenu title="Username" text={auth.username} />
         <ItemMenu title="Email" text={auth.email} />
         <ItemMenu title="Todal favorite" text={`${total} Pokemons`} />
-      </View>
+      </DataContainer>
 
-      <Button title="Salir" onPress={logout} style={styles.buttonContent} />
-    </View>
+      <ButtonContainer title="Salir" onPress={logout} />
+    </Container>
   );
 }
 
@@ -45,40 +46,51 @@ function ItemMenu(props) {
   const { title, text } = props;
 
   return (
-    <View style={styles.itemMenu}>
-      <Text style={styles.itemMenuTitle}>{title}:</Text>
+    <ItemMenuContainer>
+      <ItemMenuTitle>{title}:</ItemMenuTitle>
       <Text>{text}</Text>
-    </View>
+    </ItemMenuContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    marginHorizontal: 20,
-    marginTop: 20,
-  },
-  titleBlock: {
-    marginBottom: 30,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 22,
-  },
-  dataContent: {
-    marginBottom: 20,
-  },
-  itemMenu: {
-    flexDirection: "row",
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderColor: "#CFCFCF",
-  },
-  itemMenuTitle: {
-    fontWeight: "bold",
-    paddingRight: 10,
-    width: 120,
-  },
+
   buttonContent: {
     paddingTop: 50,
   },
 });
+
+const Container = styled.View`
+  margin: 20px 20px 0 20px;
+`;
+const TitleContainer = styled.View`
+  margin-bottom: 30px;
+`;
+
+const Title = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+`;
+
+const DataContainer = styled.View`
+  margin-bottom: 20px;
+`;
+const ItemMenuContainer = styled.View`
+  display: flex;
+  padding: 20px 0;
+  border-color: #cfcfcf;
+  flex-direction: row;
+  border-bottom-width: 1px;
+`;
+
+const ItemMenuTitle = styled.Text`
+  width: 120px;
+  font-weight: bold;
+  padding-right: 10px;
+`;
+
+// const ButtonContainer = styled.TouchableOpacity`
+// `
+const ButtonContainer = styled.View`
+  padding-top: 50px;
+`;
